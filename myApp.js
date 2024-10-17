@@ -8,6 +8,15 @@ const personSchema = new Schema({
   favoriteFoods: [String]
 });
 
+let Person = mongoose.model('Person', personSchema);
+
+var janeFonda = new Person({name: "Jane Fonda", age: 84, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
+var janeFondu = new Person({name: "Jane Fonda", age: 86, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
+var janeFondo = new Person({name: "Gabriele", age: 86, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
+var arrayOfPeople=[{janeFonda,janeFondu,janeFondo}]
+var personName = "Gabriele"
+var food = "Pizza"
+
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology:true
@@ -18,8 +27,6 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch((error) => {
   console.error("Connection Failure", error);});
 
-let Person = mongoose.model('Person', personSchema);
-
 const createAndSavePerson = (done) => {
   var janeFonda = new Person({name: "Jane Fonda", age: 84, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
   janeFonda.save((err,data)=>{
@@ -29,11 +36,6 @@ const createAndSavePerson = (done) => {
     done(null, data);
   })
 };
-var janeFonda = new Person({name: "Jane Fonda", age: 84, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
-var janeFondu = new Person({name: "Jane Fonda", age: 86, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
-var janeFondo = new Person({name: "Gabriele", age: 86, favoriteFoods: ["eggs", "fish", "fresh fruit"]});
-
-var arrayOfPeople=[{janeFonda,janeFondu,janeFondo}]
 
 const createManyPeople = (arrayOfPeople, done) => {
   Person.create(arrayOfPeople,(err,data)=>{
@@ -44,8 +46,6 @@ const createManyPeople = (arrayOfPeople, done) => {
   })
 };
 
-var personName = "Gabriele"
-var food = "Pizza"
 
 const findPeopleByName = (personName, done) => {
   Person.find({name:personName},(err,data)=>{
@@ -55,7 +55,6 @@ const findPeopleByName = (personName, done) => {
     done(null,data);
   })
 };
-
 
 const findOneByFood = (food, done) => {
   Person.findOne({favoriteFoods:food}, (err,data)=>{
@@ -120,16 +119,6 @@ const removeManyPeople = (done) => {
   })
 };
 
-/* const queryChain = (done) => {
-  const foodToSearch = "burrito";
-Person.find({favoriteFoods:foodToSearch},(err,data)=>{
-  data.sort({name:1}).limit(2).select({age:0}).exec()
-  done(null ,data);
-}).catch((err)=>{
-  console.error("KO"+ err)
-})
-}; */
-
 const queryChain = (done) => {
   const foodToSearch = "burrito";
   Person.find({ favoriteFoods: foodToSearch })
@@ -143,7 +132,6 @@ const queryChain = (done) => {
       done(err);
     });
 };
-
 
 /** **Well Done !!**
 /* You completed these challenges, let's go celebrate !
